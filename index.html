@@ -125,13 +125,13 @@ fetch('words_quiz_he.json')
       let html = `
         <h1>אוצר מילים באנגלית</h1>
         <div id="score">ניקוד: ${score}</div>
-        <div id="menu-bar">
-          <button id="start-quiz-btn">התחל תרגול</button>
-          <button id="unknown-btn">למד מילים שלא ידעתי</button>
-          <button id="learned-btn">מילים שלמדתי</button>
-          <button id="all-words-btn">רשימת כל המילים</button>
-          <button id="backup-btn">גיבוי לענן</button>
-          <button id="restore-btn">שחזור מהענן</button>
+        <div id="options">
+          <button id="start-quiz-btn" class="option">התחל תרגול</button>
+          <button id="unknown-btn" class="option">למד מילים שלא ידעתי</button>
+          <button id="learned-btn" class="option">מילים שלמדתי</button>
+          <button id="all-words-btn" class="option">רשימת כל המילים</button>
+          <button id="backup-btn" class="option">גיבוי לענן</button>
+          <button id="restore-btn" class="option">שחזור מהענן</button>
         </div>
         <button id="settings-btn" style="margin:18px auto 0 auto;display:block;padding:10px 24px;font-size:1em;border-radius:10px;background:#f8f8f8;">הגדרות</button>
         <div id="settings-panel" style="display:none;margin:20px auto 0 auto;max-width:400px;text-align:center;background:#f8f8f8;padding:18px 0;border-radius:12px;box-shadow:0 2px 8px #0001;">
@@ -402,7 +402,7 @@ fetch('words_quiz_he.json')
 
     function updateVersionIndicator() {
       const mode = localStorage.getItem('viewMode') === 'mobile' ? 'טלפון' : 'מחשב';
-      document.getElementById('version-indicator').textContent = `גרסה 18 — תצוגת ${mode}`;
+      document.getElementById('version-indicator').textContent = `גרסה 19 — תצוגת ${mode}`;
     }
   })
   .catch(error => {
