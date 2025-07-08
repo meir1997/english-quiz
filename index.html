@@ -228,9 +228,10 @@ fetch('words_quiz_he.json')
     }
 
     function startQuiz() {
-      // למידה לפי סדר, רק מילים שטרם נלמדו
+      // למידה לפי סדר, רק מילים שטרם נלמדו ושטרם הופיעו
       learnedWords = JSON.parse(localStorage.getItem('learnedWords') || '[]');
-      words = quizWords.filter(w => !learnedWords.includes(w.word));
+      appearedWords = JSON.parse(localStorage.getItem('appearedWords') || '[]');
+      words = quizWords.filter(w => !learnedWords.includes(w.word) && !appearedWords.includes(w.word));
       // מיין לפי מספר המילה (בהנחה שהפורמט הוא "מספר. מילה")
       words.sort((a, b) => {
         // חילוץ מספר המילה בצורה בטוחה
@@ -405,7 +406,7 @@ fetch('words_quiz_he.json')
 
     function updateVersionIndicator() {
       const mode = localStorage.getItem('viewMode') === 'mobile' ? 'טלפון' : 'מחשב';
-      document.getElementById('version-indicator').textContent = `גרסה 21 — תצוגת ${mode}`;
+      document.getElementById('version-indicator').textContent = `גרסה 22 — תצוגת ${mode}`;
     }
   })
   .catch(error => {
