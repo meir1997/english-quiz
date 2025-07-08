@@ -114,13 +114,14 @@ fetch('words_quiz_he.json')
           <button id="all-words-btn">רשימת כל המילים</button>
           <button id="backup-btn">גיבוי לענן</button>
           <button id="restore-btn">שחזור מהענן</button>
-          <button id="settings-btn">הגדרות</button>
         </div>
+        <button id="settings-btn" style="margin:18px auto 0 auto;display:block;padding:10px 24px;font-size:1em;border-radius:10px;background:#f8f8f8;">הגדרות</button>
         <div id="settings-panel" style="display:none;margin:20px auto 0 auto;max-width:400px;text-align:center;background:#f8f8f8;padding:18px 0;border-radius:12px;box-shadow:0 2px 8px #0001;">
           <div style="font-size:1.1em;margin-bottom:10px;">בחר תצוגה:</div>
           <button id="view-mobile" style="margin:0 8px;padding:8px 18px;font-size:1em;border-radius:8px;">תצוגת טלפון</button>
           <button id="view-desktop" style="margin:0 8px;padding:8px 18px;font-size:1em;border-radius:8px;">תצוגת מחשב</button>
         </div>
+        <div style="position:fixed;bottom:10px;left:10px;font-size:0.8em;color:#888;z-index:1000;">גרסה 11</div>
       `;
       document.getElementById('main-content').innerHTML = html;
       document.getElementById('start-quiz-btn').onclick = startQuiz;
