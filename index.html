@@ -18,20 +18,27 @@
     #menu-bar { margin: 28px 0; }
     #menu-bar button { margin: 0 8px; padding: 12px 28px; font-size: var(--button-font-size); border-radius: 12px; border: none; background: #eee; cursor: pointer; }
     #menu-bar button:hover { background: #d0eaff; }
+    #options {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+      width: 100%;
+      margin: 0 auto 18px auto;
+    }
     .option {
+      width: 100%;
+      min-width: 220px;
+      max-width: 420px;
+      height: var(--option-height);
+      margin: 0;
       display: block;
-      margin: var(--option-margin);
       padding: var(--main-padding);
       font-size: var(--option-font-size);
       border-radius: 12px;
       border: 1.2px solid #ccc;
       background: #f5f5f5;
       cursor: pointer;
-      min-width: 0;
-      max-width: 98vw;
-      width: var(--option-width);
-      height: var(--option-height);
-      box-sizing: border-box;
       text-align: center;
       line-height: normal;
       transition: box-shadow 0.2s;
@@ -129,7 +136,7 @@ fetch('words_quiz_he.json')
           <button id="view-mobile" style="margin:0 8px;padding:8px 18px;font-size:1em;border-radius:8px;">תצוגת טלפון</button>
           <button id="view-desktop" style="margin:0 8px;padding:8px 18px;font-size:1em;border-radius:8px;">תצוגת מחשב</button>
         </div>
-        <div style="position:fixed;bottom:10px;left:10px;font-size:0.8em;color:#888;z-index:1000;">גרסה 12</div>
+        <div style="position:fixed;bottom:10px;left:10px;font-size:0.8em;color:#888;z-index:1000;">גרסה 13</div>
       `;
       document.getElementById('main-content').innerHTML = html;
       document.getElementById('start-quiz-btn').onclick = startQuiz;
