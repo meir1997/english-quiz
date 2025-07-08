@@ -129,11 +129,17 @@ fetch('words_quiz_he.json')
     }
 
     function startQuiz() {
-      words = shuffle([...quizWords]);
+      // למידה לפי סדר, רק מילים שטרם נלמדו
+      learnedWords = JSON.parse(localStorage.getItem('learnedWords') || '[]');
+      words = quizWords.filter(w => !learnedWords.includes(w.word));
+      // מיין לפי מספר המילה (בהנחה שהפורמט הוא "מספר. מילה")
+      words.sort((a, b) => {
+        const numA = parseInt(a.word.split('.')[0], 10);
+        const numB = parseInt(b.word.split('.')[0], 10);
+        return numA - numB;
+      });
       score = parseInt(localStorage.getItem('vocabScore') || '0', 10);
       current = 0;
-      learnedWords = JSON.parse(localStorage.getItem('learnedWords') || '[]');
-      appearedWords = JSON.parse(localStorage.getItem('appearedWords') || '[]');
       showQuestion();
     }
 
@@ -184,6 +190,13 @@ fetch('words_quiz_he.json')
         <div id="options"></div>
         <div id="feedback"></div>
         <div id="score">ניקוד: ${score}</div>
+        <div style="margin:20px 0;">
+          <button id="prev100-btn">⬅️ 100</button>
+          <button id="prev-btn">⬅️</button>
+          <span> ${current + 1} / ${words.length} </span>
+          <button id="next-btn">➡️</button>
+          <button id="next100-btn">100 ➡️</button>
+        </div>
       `;
       document.getElementById('main-content').innerHTML = html;
       const optionsDiv = document.getElementById('options');
@@ -212,15 +225,10 @@ fetch('words_quiz_he.json')
             document.getElementById('feedback').textContent = 'טעות. התשובה הנכונה: ' + w.correct;
           }
           document.getElementById('score').textContent = 'ניקוד: ' + score;
-          current++;
-          if (current < words.length) {
-            setTimeout(() => {
-              document.getElementById('feedback').textContent = '';
-              showQuestion();
-            }, 1000);
-          } else {
-            setTimeout(() => showQuestion(), 1000);
-          }
+          setTimeout(() => {
+            current++;
+            showQuestion();
+          }, 1000);
         };
         optionsDiv.appendChild(btn);
       });
@@ -236,17 +244,33 @@ fetch('words_quiz_he.json')
           localStorage.setItem('appearedWords', JSON.stringify(appearedWords3));
         }
         document.getElementById('feedback').textContent = "הוספת ל'לא ידעתי'";
-        current++;
-        if (current < words.length) {
-          setTimeout(() => {
-            document.getElementById('feedback').textContent = '';
-            showQuestion();
-          }, 700);
-        } else {
-          setTimeout(() => showQuestion(), 700);
-        }
+        setTimeout(() => {
+          current++;
+          showQuestion();
+        }, 700);
       };
       optionsDiv.appendChild(dontKnowBtn);
+      // חיצים לניווט
+      document.getElementById('prev-btn').onclick = () => {
+        if (current > 0) {
+          current--;
+          showQuestion();
+        }
+      };
+      document.getElementById('next-btn').onclick = () => {
+        if (current < words.length - 1) {
+          current++;
+          showQuestion();
+        }
+      };
+      document.getElementById('prev100-btn').onclick = () => {
+        current = Math.max(0, current - 100);
+        showQuestion();
+      };
+      document.getElementById('next100-btn').onclick = () => {
+        current = Math.min(words.length - 1, current + 100);
+        showQuestion();
+      };
     }
 
     function shuffle(array) {
