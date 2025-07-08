@@ -152,7 +152,13 @@ fetch('words_quiz_he.json')
         document.getElementById('back-btn').onclick = goHome;
         return;
       }
-      words = shuffle([...unknown]);
+      // הצג לפי סדר מספרי בלבד
+      words = [...unknown];
+      words.sort((a, b) => {
+        const numA = parseInt(a.word.split('.')[0], 10);
+        const numB = parseInt(b.word.split('.')[0], 10);
+        return numA - numB;
+      });
       score = parseInt(localStorage.getItem('vocabScore') || '0', 10);
       current = 0;
       showQuestion();
@@ -271,14 +277,6 @@ fetch('words_quiz_he.json')
         current = Math.min(words.length - 1, current + 100);
         showQuestion();
       };
-    }
-
-    function shuffle(array) {
-      for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-      }
-      return array;
     }
 
     document.getElementById('home-btn').onclick = () => location.reload();
