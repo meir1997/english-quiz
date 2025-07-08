@@ -13,9 +13,10 @@
       --option-height: 60px;
       --option-margin: 18px auto;
       --option-max-width: 420px;
+      --main-max-width: 500px;
     }
     body { direction: rtl; font-family: Arial, sans-serif; background: #fafafa; font-size: var(--main-font-size); }
-    #main-content { max-width: 500px; margin: 40px auto; text-align: center; }
+    #main-content { max-width: var(--main-max-width); margin: 40px auto; text-align: center; }
     #menu-bar { margin: 28px 0; }
     #menu-bar button { margin: 0 8px; padding: 12px 28px; font-size: var(--button-font-size); border-radius: 12px; border: none; background: #eee; cursor: pointer; }
     #menu-bar button:hover { background: #d0eaff; }
@@ -179,6 +180,7 @@ fetch('words_quiz_he.json')
         style.setProperty('--option-height', '80px');
         style.setProperty('--option-margin', '18px auto');
         style.setProperty('--option-max-width', '96vw');
+        style.setProperty('--main-max-width', '100vw');
         document.body.classList.add('mobile-view');
       } else {
         style.setProperty('--main-font-size', '1em');
@@ -189,6 +191,7 @@ fetch('words_quiz_he.json')
         style.setProperty('--option-height', '60px');
         style.setProperty('--option-margin', '18px auto');
         style.setProperty('--option-max-width', '420px');
+        style.setProperty('--main-max-width', '500px');
         document.body.classList.add('desktop-view');
       }
     }
@@ -402,7 +405,7 @@ fetch('words_quiz_he.json')
 
     function updateVersionIndicator() {
       const mode = localStorage.getItem('viewMode') === 'mobile' ? 'טלפון' : 'מחשב';
-      document.getElementById('version-indicator').textContent = `גרסה 19 — תצוגת ${mode}`;
+      document.getElementById('version-indicator').textContent = `גרסה 20 — תצוגת ${mode}`;
     }
   })
   .catch(error => {
