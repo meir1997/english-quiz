@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <title>אוצר מילים באנגלית</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <style>
     :root {
       --main-font-size: 1em;
@@ -14,31 +13,10 @@
       --option-height: 60px;
       --option-margin: 18px auto;
     }
-    body {
-      direction: rtl;
-      font-family: Arial, sans-serif;
-      background: #fafafa;
-      font-size: var(--main-font-size);
-      margin: 0;
-      padding: 0;
-    }
-    #main-content {
-      max-width: 500px;
-      margin: 40px auto;
-      text-align: center;
-      font-size: var(--main-font-size);
-    }
+    body { direction: rtl; font-family: Arial, sans-serif; background: #fafafa; font-size: var(--main-font-size); }
+    #main-content { max-width: 500px; margin: 40px auto; text-align: center; }
     #menu-bar { margin: 28px 0; }
-    #menu-bar button {
-      margin: 0 8px;
-      padding: 12px 28px;
-      font-size: var(--button-font-size);
-      border-radius: 12px;
-      border: none;
-      background: #eee;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
+    #menu-bar button { margin: 0 8px; padding: 12px 28px; font-size: var(--button-font-size); border-radius: 12px; border: none; background: #eee; cursor: pointer; }
     #menu-bar button:hover { background: #d0eaff; }
     .option {
       display: block;
@@ -56,7 +34,7 @@
       box-sizing: border-box;
       text-align: center;
       line-height: normal;
-      transition: box-shadow 0.2s, background 0.2s;
+      transition: box-shadow 0.2s;
     }
     .option:hover {
       background: #e0f7fa;
@@ -65,61 +43,19 @@
     .word-number { display: block; font-size: 0.5em; color: #888; margin-bottom: 0.2em; }
     .word-main { display: block; font-size: 1.1em; font-weight: bold; }
     .arrows-bar { margin: 24px 0 0 0; display: flex; justify-content: center; gap: 12px; }
-    .arrow-btn {
-      font-size: 1.1em;
-      padding: 10px 16px;
-      border-radius: 8px;
-      border: 1.2px solid #bbb;
-      background: #f0f0f0;
-      margin: 0 4px;
-      min-width: 40px;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
+    .arrow-btn { font-size: var(--button-font-size); padding: 10px 16px; border-radius: 8px; border: 1.2px solid #bbb; background: #f0f0f0; margin: 0 4px; min-width: 40px; cursor: pointer; }
     .arrow-btn:active { background: #d0eaff; }
-    #feedback { margin: 18px; font-size: 1.1em; }
-    #score { font-weight: bold; font-size: 1.1em; }
-    h1, h2 { font-size: 1.7em; margin-top: 0.7em; }
-    #home-btn {
-      position:fixed;top:20px;left:20px;z-index:1000;
-      padding:10px 18px;font-size:1.1em;border-radius:8px;
-      border:none;background:#e0f7fa;cursor:pointer;
-    }
-
-    /* מצב מובייל */
-    .mobile-view {
-      --main-font-size: 1.3em;
-      --option-font-size: 1.15em;
-      --button-font-size: 1.1em;
-      --main-padding: 12px 0;
-      --option-width: 96vw;
-      --option-height: 80px;
-      --option-margin: 16px auto;
-    }
-    /* מצב דסקטופ */
-    .desktop-view {
-      --main-font-size: 1em;
-      --option-font-size: 1em;
-      --button-font-size: 1em;
-      --main-padding: 8px 0;
-      --option-width: 420px;
-      --option-height: 60px;
-      --option-margin: 18px auto;
-    }
-
-    @media (max-width: 600px) {
-      #main-content { max-width: 98vw; }
-      #home-btn { left:10px; top:10px; font-size:1em; padding:8px 12px;}
-    }
+    #feedback { margin: 18px; font-size: var(--main-font-size); }
+    #score { font-weight: bold; font-size: var(--main-font-size); }
+    h1, h2 { font-size: calc(var(--main-font-size) * 1.5); }
   </style>
 </head>
 <body>
   <div id="main-content">טוען...</div>
-  <button id="home-btn">דף הבית</button>
-
-  <!-- Firebase (גיבוי/שחזור) -->
+  <button id="home-btn" style="position:fixed;top:20px;left:20px;z-index:1000;padding:10px 18px;font-size:1.1em;border-radius:8px;border:none;background:#e0f7fa;cursor:pointer;">דף הבית</button>
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-analytics.js";
     import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
     const firebaseConfig = {
@@ -133,8 +69,10 @@
     };
 
     const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
     const db = getFirestore(app);
 
+    // פונקציות גיבוי ושחזור
     window.saveProgressToCloud = async function() {
       const userId = prompt("הכנס מזהה משתמש (למשל אימייל):");
       if (!userId) return;
@@ -145,7 +83,7 @@
       };
       await setDoc(doc(db, "users", userId), data);
       alert("ההתקדמות נשמרה בענן!");
-    };
+    }
 
     window.loadProgressFromCloud = async function() {
       const userId = prompt("הכנס מזהה משתמש (למשל אימייל):");
@@ -161,263 +99,285 @@
       } else {
         alert("לא נמצאה התקדמות עבור משתמש זה.");
       }
-    };
+    }
   </script>
-
   <script>
-    // 1. טעינת רשימת המילים
-    fetch('words_quiz_he.json')
-      .then(response => response.json())
-      .then(quizWords => {
-        // --- משתנים כלליים
-        let words = [];
-        let score = parseInt(localStorage.getItem('vocabScore') || '0', 10);
-        let current = 0;
-        let learnedWords = JSON.parse(localStorage.getItem('learnedWords') || '[]');
-        let appearedWords = JSON.parse(localStorage.getItem('appearedWords') || '[]');
+fetch('words_quiz_he.json')
+  .then(response => response.json())
+  .then(quizWords => {
+    let words = [];
+    let score = parseInt(localStorage.getItem('vocabScore') || '0', 10);
+    let current = 0;
+    let learnedWords = JSON.parse(localStorage.getItem('learnedWords') || '[]');
+    let appearedWords = JSON.parse(localStorage.getItem('appearedWords') || '[]');
 
-        // --- פונקציות עזר
-        function applyViewMode() {
-          const mode = localStorage.getItem('viewMode');
-          document.body.classList.remove('mobile-view', 'desktop-view');
-          if (mode === 'mobile') document.body.classList.add('mobile-view');
-          else document.body.classList.add('desktop-view');
-        }
-
-        function goHome() {
-          let html = `
-            <h1>אוצר מילים באנגלית</h1>
-            <div id="score">ניקוד: ${score}</div>
-            <div id="menu-bar">
-              <button id="start-quiz-btn">התחל תרגול</button>
-              <button id="unknown-btn">למד מילים שלא ידעתי</button>
-              <button id="learned-btn">מילים שלמדתי</button>
-              <button id="all-words-btn">רשימת כל המילים</button>
-              <button id="backup-btn">גיבוי לענן</button>
-              <button id="restore-btn">שחזור מהענן</button>
-            </div>
-            <button id="settings-btn" style="margin:18px auto 0 auto;display:block;padding:10px 24px;font-size:1em;border-radius:10px;background:#f8f8f8;">הגדרות</button>
-            <div id="settings-panel" style="display:none;margin:20px auto 0 auto;max-width:400px;text-align:center;background:#f8f8f8;padding:18px 0;border-radius:12px;box-shadow:0 2px 8px #0001;">
-              <div style="font-size:1.1em;margin-bottom:10px;">בחר תצוגה:</div>
-              <button id="view-mobile" style="margin:0 8px;padding:8px 18px;font-size:1em;border-radius:8px;">תצוגת טלפון</button>
-              <button id="view-desktop" style="margin:0 8px;padding:8px 18px;font-size:1em;border-radius:8px;">תצוגת מחשב</button>
-            </div>
-            <div style="position:fixed;bottom:10px;left:10px;font-size:0.8em;color:#888;z-index:1000;">גרסה 12</div>
-          `;
-          document.getElementById('main-content').innerHTML = html;
-          document.getElementById('start-quiz-btn').onclick = startQuiz;
-          document.getElementById('unknown-btn').onclick = startUnknownQuiz;
-          document.getElementById('learned-btn').onclick = showLearnedWords;
-          document.getElementById('all-words-btn').onclick = () => showAllWords('all');
-          document.getElementById('backup-btn').onclick = window.saveProgressToCloud;
-          document.getElementById('restore-btn').onclick = window.loadProgressFromCloud;
-          document.getElementById('settings-btn').onclick = () => {
-            const panel = document.getElementById('settings-panel');
-            panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
-          };
-          document.getElementById('view-mobile').onclick = () => {
-            localStorage.setItem('viewMode', 'mobile');
-            applyViewMode();
-            goHome();
-          };
-          document.getElementById('view-desktop').onclick = () => {
-            localStorage.setItem('viewMode', 'desktop');
-            applyViewMode();
-            goHome();
-          };
-        }
-
-        function showAllWords(filter = 'all') {
-          learnedWords = JSON.parse(localStorage.getItem('learnedWords') || '[]');
-          appearedWords = JSON.parse(localStorage.getItem('appearedWords') || '[]');
-          let filtered = quizWords;
-          if (filter === 'known') filtered = quizWords.filter(w => learnedWords.includes(w.word));
-          if (filter === 'unknown') filtered = quizWords.filter(w => appearedWords.includes(w.word) && !learnedWords.includes(w.word));
-          if (filter === 'not-seen') filtered = quizWords.filter(w => !appearedWords.includes(w.word));
-          let html = `<h2>רשימת כל המילים</h2>
-            <div>
-              <button id="filter-all">הכל</button>
-              <button id="filter-known">שלמדתי</button>
-              <button id="filter-unknown">שלא ידעתי</button>
-              <button id="filter-not-seen">שטרם הופיעו</button>
-            </div>
-            <ul style="list-style:none;padding:0;">
-          `;
-          html += filtered.map(w => {
-            let status = learnedWords.includes(w.word) ? '✔️' : (appearedWords.includes(w.word) ? '❌' : '⏳');
-            return `<li>${w.word} ${status}</li>`;
-          }).join('') + '</ul>';
-          html += `<button id="back-btn">חזור</button> <button id="scroll-top-btn">חזור למעלה</button>`;
-          document.getElementById('main-content').innerHTML = html;
-          document.getElementById('back-btn').onclick = goHome;
-          document.getElementById('filter-all').onclick = () => showAllWords('all');
-          document.getElementById('filter-known').onclick = () => showAllWords('known');
-          document.getElementById('filter-unknown').onclick = () => showAllWords('unknown');
-          document.getElementById('filter-not-seen').onclick = () => showAllWords('not-seen');
-          document.getElementById('scroll-top-btn').onclick = () => window.scrollTo({top:0,behavior:'smooth'});
-        }
-
-        function showLearnedWords() {
-          learnedWords = JSON.parse(localStorage.getItem('learnedWords') || '[]');
-          let filteredLearned = quizWords.filter(w => learnedWords.includes(w.word));
-          let html = `<h2>מילים שלמדת</h2>`;
-          if (filteredLearned.length === 0) {
-            html += '<div>לא נמצאו מילים שלמדת</div>';
-          } else {
-            html += '<ul style="list-style:none;padding:0;">' +
-              filteredLearned.map(w => `<li>${w.word} ✔️</li>`).join('') + '</ul>';
-          }
-          html += `<button id="back-btn">חזור</button>`;
-          document.getElementById('main-content').innerHTML = html;
-          document.getElementById('back-btn').onclick = goHome;
-        }
-
-        function startQuiz() {
-          // למידה לפי סדר, רק מילים שטרם נלמדו
-          learnedWords = JSON.parse(localStorage.getItem('learnedWords') || '[]');
-          words = quizWords.filter(w => !learnedWords.includes(w.word));
-          words.sort((a, b) => {
-            const numA = parseInt((a.word.match(/^\s*(\d+)/) || [0,0])[1], 10);
-            const numB = parseInt((b.word.match(/^\s*(\d+)/) || [0,0])[1], 10);
-            return numA - numB;
-          });
-          score = parseInt(localStorage.getItem('vocabScore') || '0', 10);
-          current = 0;
-          showQuestion();
-        }
-
-        function startUnknownQuiz() {
-          learnedWords = JSON.parse(localStorage.getItem('learnedWords') || '[]');
-          appearedWords = JSON.parse(localStorage.getItem('appearedWords') || '[]');
-          const unknown = quizWords.filter(w => appearedWords.includes(w.word) && !learnedWords.includes(w.word));
-          if (unknown.length === 0) {
-            document.getElementById('main-content').innerHTML = '<h2>אין מילים שלא ידעת!</h2><button id="back-btn">חזור</button>';
-            document.getElementById('back-btn').onclick = goHome;
-            return;
-          }
-          words = [...unknown];
-          words.sort((a, b) => {
-            const numA = parseInt((a.word.match(/^\s*(\d+)/) || [0,0])[1], 10);
-            const numB = parseInt((b.word.match(/^\s*(\d+)/) || [0,0])[1], 10);
-            return numA - numB;
-          });
-          score = parseInt(localStorage.getItem('vocabScore') || '0', 10);
-          current = 0;
-          showQuestion();
-        }
-
-        function showQuestion() {
-          if (current >= words.length) {
-            document.getElementById('main-content').innerHTML = `<h2>סיימת את כל המילים!</h2><div id="score">ניקוד: ${score}</div><button id="back-btn">חזור</button>`;
-            document.getElementById('back-btn').onclick = goHome;
-            return;
-          }
-          const w = words[current];
-          // שמור הופעה של מילה ב-localStorage
-          let appearedWords = JSON.parse(localStorage.getItem('appearedWords') || '[]');
-          if (!appearedWords.includes(w.word)) {
-            appearedWords.push(w.word);
-            localStorage.setItem('appearedWords', JSON.stringify(appearedWords));
-          }
-          let html = `<span class="word-number">${w.word.split('.')[0]}</span>
-            <span class="word-main">${w.word.replace(/^\s*\d+\.\s*/, '')}</span>
-            <div id="options"></div>
-            <div id="feedback"></div>
-            <div id="score">ניקוד: ${score}</div>
-            <div class="arrows-bar">
-              <button id="prev100-btn" class="arrow-btn">⬅️ 100</button>
-              <button id="prev-btn" class="arrow-btn">⬅️</button>
-              <span style="font-size:0.7em;align-self:center;">${current + 1} / ${words.length}</span>
-              <button id="next-btn" class="arrow-btn">➡️</button>
-              <button id="next100-btn" class="arrow-btn">100 ➡️</button>
-            </div>
-          `;
-          document.getElementById('main-content').innerHTML = html;
-          const optionsDiv = document.getElementById('options');
-          w.options.forEach(option => {
-            const btn = document.createElement('button');
-            btn.textContent = option;
-            btn.className = 'option';
-            btn.onclick = () => {
-              if (option === w.correct) {
-                document.getElementById('feedback').textContent = 'נכון!';
-                score++;
-                localStorage.setItem('vocabScore', score);
-                let learnedWords = JSON.parse(localStorage.getItem('learnedWords') || '[]');
-                if (!learnedWords.includes(w.word)) {
-                  learnedWords.push(w.word);
-                  localStorage.setItem('learnedWords', JSON.stringify(learnedWords));
-                }
-                // הסר מהמילים שלא ידעתי
-                let appearedWords2 = JSON.parse(localStorage.getItem('appearedWords') || '[]');
-                if (appearedWords2.includes(w.word)) {
-                  appearedWords2 = appearedWords2.filter(word => word !== w.word);
-                  localStorage.setItem('appearedWords', JSON.stringify(appearedWords2));
-                }
-              } else {
-                document.getElementById('feedback').textContent = 'טעות. התשובה הנכונה: ' + w.correct;
-              }
-              document.getElementById('score').textContent = 'ניקוד: ' + score;
-              setTimeout(() => {
-                current++;
-                showQuestion();
-              }, 1000);
-            };
-            optionsDiv.appendChild(btn);
-          });
-          // כפתור "לא יודע"
-          const dontKnowBtn = document.createElement('button');
-          dontKnowBtn.textContent = 'לא יודע';
-          dontKnowBtn.className = 'option';
-          dontKnowBtn.style.backgroundColor = '#ffe0e0';
-          dontKnowBtn.onclick = () => {
-            let appearedWords3 = JSON.parse(localStorage.getItem('appearedWords') || '[]');
-            if (!appearedWords3.includes(w.word)) {
-              appearedWords3.push(w.word);
-              localStorage.setItem('appearedWords', JSON.stringify(appearedWords3));
-            }
-            document.getElementById('feedback').textContent = "הוספת ל'לא ידעתי'";
-            setTimeout(() => {
-              current++;
-              showQuestion();
-            }, 700);
-          };
-          optionsDiv.appendChild(dontKnowBtn);
-          // חיצים לניווט
-          document.getElementById('prev-btn').onclick = () => {
-            if (current > 0) {
-              current--;
-              showQuestion();
-            }
-          };
-          document.getElementById('next-btn').onclick = () => {
-            if (current < words.length - 1) {
-              current++;
-              showQuestion();
-            }
-          };
-          document.getElementById('prev100-btn').onclick = () => {
-            current = Math.max(0, current - 100);
-            showQuestion();
-          };
-          document.getElementById('next100-btn').onclick = () => {
-            current = Math.min(words.length - 1, current + 100);
-            showQuestion();
-          };
-        }
-
-        // כפתור דף הבית תמיד מרענן
-        document.getElementById('home-btn').onclick = () => location.reload();
-
-        // הרצה ראשונית
-        goHome();
+    function goHome() {
+      let html = `
+        <h1>אוצר מילים באנגלית</h1>
+        <div id="score">ניקוד: ${score}</div>
+        <div id="menu-bar">
+          <button id="start-quiz-btn">התחל תרגול</button>
+          <button id="unknown-btn">למד מילים שלא ידעתי</button>
+          <button id="learned-btn">מילים שלמדתי</button>
+          <button id="all-words-btn">רשימת כל המילים</button>
+          <button id="backup-btn">גיבוי לענן</button>
+          <button id="restore-btn">שחזור מהענן</button>
+        </div>
+        <button id="settings-btn" style="margin:18px auto 0 auto;display:block;padding:10px 24px;font-size:1em;border-radius:10px;background:#f8f8f8;">הגדרות</button>
+        <div id="settings-panel" style="display:none;margin:20px auto 0 auto;max-width:400px;text-align:center;background:#f8f8f8;padding:18px 0;border-radius:12px;box-shadow:0 2px 8px #0001;">
+          <div style="font-size:1.1em;margin-bottom:10px;">בחר תצוגה:</div>
+          <button id="view-mobile" style="margin:0 8px;padding:8px 18px;font-size:1em;border-radius:8px;">תצוגת טלפון</button>
+          <button id="view-desktop" style="margin:0 8px;padding:8px 18px;font-size:1em;border-radius:8px;">תצוגת מחשב</button>
+        </div>
+        <div style="position:fixed;bottom:10px;left:10px;font-size:0.8em;color:#888;z-index:1000;">גרסה 12</div>
+      `;
+      document.getElementById('main-content').innerHTML = html;
+      document.getElementById('start-quiz-btn').onclick = startQuiz;
+      document.getElementById('unknown-btn').onclick = startUnknownQuiz;
+      document.getElementById('learned-btn').onclick = showLearnedWords;
+      document.getElementById('all-words-btn').onclick = showAllWords;
+      document.getElementById('backup-btn').onclick = window.saveProgressToCloud;
+      document.getElementById('restore-btn').onclick = window.loadProgressFromCloud;
+      document.getElementById('settings-btn').onclick = () => {
+        const panel = document.getElementById('settings-panel');
+        panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+      };
+      document.getElementById('view-mobile').onclick = () => {
+        localStorage.setItem('viewMode', 'mobile');
         applyViewMode();
-        document.addEventListener('DOMContentLoaded', applyViewMode);
-      })
-      .catch(error => {
-        document.getElementById('main-content').textContent = 'שגיאה בטעינת החידון';
-        console.error('Error loading JSON:', error);
+        goHome();
+      };
+      document.getElementById('view-desktop').onclick = () => {
+        localStorage.setItem('viewMode', 'desktop');
+        applyViewMode();
+        goHome();
+      };
+    }
+
+    function applyViewMode() {
+      const mode = localStorage.getItem('viewMode');
+      const style = document.documentElement.style;
+      document.body.classList.remove('mobile-view', 'desktop-view');
+      if (mode === 'mobile') {
+        style.setProperty('--main-font-size', '1em');
+        style.setProperty('--option-font-size', '1em');
+        style.setProperty('--button-font-size', '1em');
+        style.setProperty('--main-padding', '8px 0');
+        style.setProperty('--option-width', '96vw');
+        style.setProperty('--option-height', '80px');
+        style.setProperty('--option-margin', '18px auto');
+        document.body.classList.add('mobile-view');
+      } else {
+        style.setProperty('--main-font-size', '1em');
+        style.setProperty('--option-font-size', '1em');
+        style.setProperty('--button-font-size', '1em');
+        style.setProperty('--main-padding', '8px 0');
+        style.setProperty('--option-width', '420px');
+        style.setProperty('--option-height', '60px');
+        style.setProperty('--option-margin', '18px auto');
+        document.body.classList.add('desktop-view');
+      }
+    }
+
+    function showAllWords(filter = 'all') {
+      learnedWords = JSON.parse(localStorage.getItem('learnedWords') || '[]');
+      appearedWords = JSON.parse(localStorage.getItem('appearedWords') || '[]');
+      let filtered = quizWords;
+      if (filter === 'known') filtered = quizWords.filter(w => learnedWords.includes(w.word));
+      if (filter === 'unknown') filtered = quizWords.filter(w => appearedWords.includes(w.word) && !learnedWords.includes(w.word));
+      if (filter === 'not-seen') filtered = quizWords.filter(w => !appearedWords.includes(w.word));
+      let html = `<h2>רשימת כל המילים</h2>
+        <div>
+          <button id="filter-all">הכל</button>
+          <button id="filter-known">שלמדתי</button>
+          <button id="filter-unknown">שלא ידעתי</button>
+          <button id="filter-not-seen">שטרם הופיעו</button>
+        </div>
+        <ul style="list-style:none;padding:0;">
+      `;
+      html += filtered.map(w => {
+        let status = learnedWords.includes(w.word) ? '✔️' : (appearedWords.includes(w.word) ? '❌' : '⏳');
+        return `<li>${w.word} ${status}</li>`;
+      }).join('') + '</ul>';
+      html += `<button id="back-btn">חזור</button> <button id="scroll-top-btn">חזור למעלה</button>`;
+      document.getElementById('main-content').innerHTML = html;
+      document.getElementById('back-btn').onclick = goHome;
+      document.getElementById('filter-all').onclick = () => showAllWords('all');
+      document.getElementById('filter-known').onclick = () => showAllWords('known');
+      document.getElementById('filter-unknown').onclick = () => showAllWords('unknown');
+      document.getElementById('filter-not-seen').onclick = () => showAllWords('not-seen');
+      document.getElementById('scroll-top-btn').onclick = () => window.scrollTo({top:0,behavior:'smooth'});
+    }
+
+    function startQuiz() {
+      // למידה לפי סדר, רק מילים שטרם נלמדו
+      learnedWords = JSON.parse(localStorage.getItem('learnedWords') || '[]');
+      words = quizWords.filter(w => !learnedWords.includes(w.word));
+      // מיין לפי מספר המילה (בהנחה שהפורמט הוא "מספר. מילה")
+      words.sort((a, b) => {
+        // חילוץ מספר המילה בצורה בטוחה
+        const numA = parseInt((a.word.match(/^\s*(\d+)/) || [0,0])[1], 10);
+        const numB = parseInt((b.word.match(/^\s*(\d+)/) || [0,0])[1], 10);
+        return numA - numB;
       });
+      score = parseInt(localStorage.getItem('vocabScore') || '0', 10);
+      current = 0;
+      showQuestion();
+    }
+
+    function startUnknownQuiz() {
+      learnedWords = JSON.parse(localStorage.getItem('learnedWords') || '0');
+      appearedWords = JSON.parse(localStorage.getItem('appearedWords') || '[]');
+      const unknown = quizWords.filter(w => appearedWords.includes(w.word) && !learnedWords.includes(w.word));
+      if (unknown.length === 0) {
+        document.getElementById('main-content').innerHTML = '<h2>אין מילים שלא ידעת!</h2><button id="back-btn">חזור</button>';
+        document.getElementById('back-btn').onclick = goHome;
+        return;
+      }
+      // הצג לפי סדר מספרי בלבד
+      words = [...unknown];
+      words.sort((a, b) => {
+        // חילוץ מספר המילה בצורה בטוחה
+        const numA = parseInt((a.word.match(/^\s*(\d+)/) || [0,0])[1], 10);
+        const numB = parseInt((b.word.match(/^\s*(\d+)/) || [0,0])[1], 10);
+        return numA - numB;
+      });
+      score = parseInt(localStorage.getItem('vocabScore') || '0', 10);
+      current = 0;
+      showQuestion();
+    }
+
+    function showLearnedWords() {
+      learnedWords = JSON.parse(localStorage.getItem('learnedWords') || '[]');
+      let filteredLearned = quizWords.filter(w => learnedWords.includes(w.word));
+      let html = `<h2>מילים שלמדת</h2>`;
+      if (filteredLearned.length === 0) {
+        html += '<div>לא נמצאו מילים שלמדת</div>';
+      } else {
+        html += '<ul style="list-style:none;padding:0;">' +
+          filteredLearned.map(w => `<li>${w.word} ✔️</li>`).join('') + '</ul>';
+      }
+      html += `<button id="back-btn">חזור</button>`;
+      document.getElementById('main-content').innerHTML = html;
+      document.getElementById('back-btn').onclick = goHome;
+    }
+
+    function showQuestion() {
+      if (current >= words.length) {
+        document.getElementById('main-content').innerHTML = `<h2>סיימת את כל המילים!</h2><div id="score">ניקוד: ${score}</div><button id="back-btn">חזור</button>`;
+        document.getElementById('back-btn').onclick = goHome;
+        return;
+      }
+      const w = words[current];
+      // שמור הופעה של מילה ב-localStorage
+      let appearedWords = JSON.parse(localStorage.getItem('appearedWords') || '[]');
+      if (!appearedWords.includes(w.word)) {
+        appearedWords.push(w.word);
+        localStorage.setItem('appearedWords', JSON.stringify(appearedWords));
+      }
+      let html = `<span class="word-number">${w.word.split('.')[0]}</span><span class="word-main">${w.word.replace(/^\s*\d+\.\s*/, '')}</span>`;
+      html += `
+        <div id="options"></div>
+        <div id="feedback"></div>
+        <div id="score">ניקוד: ${score}</div>
+        <div class="arrows-bar">
+          <button id="prev100-btn" class="arrow-btn">⬅️ 100</button>
+          <button id="prev-btn" class="arrow-btn">⬅️</button>
+          <span style="font-size:0.7em;align-self:center;">${current + 1} / ${words.length}</span>
+          <button id="next-btn" class="arrow-btn">➡️</button>
+          <button id="next100-btn" class="arrow-btn">100 ➡️</button>
+        </div>
+      `;
+      document.getElementById('main-content').innerHTML = html;
+      const optionsDiv = document.getElementById('options');
+      w.options.forEach(option => {
+        const btn = document.createElement('button');
+        btn.textContent = option;
+        btn.className = 'option';
+        btn.onclick = () => {
+          if (option === w.correct) {
+            document.getElementById('feedback').textContent = 'נכון!';
+            score++;
+            localStorage.setItem('vocabScore', score);
+            // הוספת המילה ל-learnedWords אם לא קיימת
+            let learnedWords = JSON.parse(localStorage.getItem('learnedWords') || '[]');
+            if (!learnedWords.includes(w.word)) {
+              learnedWords.push(w.word);
+              localStorage.setItem('learnedWords', JSON.stringify(learnedWords));
+            }
+            // הסר את המילה מ-appearedWords אם קיימת
+            let appearedWords2 = JSON.parse(localStorage.getItem('appearedWords') || '[]');
+            if (appearedWords2.includes(w.word)) {
+              appearedWords2 = appearedWords2.filter(word => word !== w.word);
+              localStorage.setItem('appearedWords', JSON.stringify(appearedWords2));
+            }
+          } else {
+            document.getElementById('feedback').textContent = 'טעות. התשובה הנכונה: ' + w.correct;
+          }
+          document.getElementById('score').textContent = 'ניקוד: ' + score;
+          setTimeout(() => {
+            current++;
+            showQuestion();
+          }, 1000);
+        };
+        optionsDiv.appendChild(btn);
+      });
+      // הוסף כפתור "לא יודע"
+      const dontKnowBtn = document.createElement('button');
+      dontKnowBtn.textContent = 'לא יודע';
+      dontKnowBtn.className = 'option';
+      dontKnowBtn.style.backgroundColor = '#ffe0e0';
+      dontKnowBtn.onclick = () => {
+        let appearedWords3 = JSON.parse(localStorage.getItem('appearedWords') || '[]');
+        if (!appearedWords3.includes(w.word)) {
+          appearedWords3.push(w.word);
+          localStorage.setItem('appearedWords', JSON.stringify(appearedWords3));
+        }
+        document.getElementById('feedback').textContent = "הוספת ל'לא ידעתי'";
+        setTimeout(() => {
+          current++;
+          showQuestion();
+        }, 700);
+      };
+      optionsDiv.appendChild(dontKnowBtn);
+      // חיצים לניווט
+      document.getElementById('prev-btn').onclick = () => {
+        if (current > 0) {
+          current--;
+          showQuestion();
+        }
+      };
+      document.getElementById('next-btn').onclick = () => {
+        if (current < words.length - 1) {
+          current++;
+          showQuestion();
+        }
+      };
+      document.getElementById('prev100-btn').onclick = () => {
+        current = Math.max(0, current - 100);
+        showQuestion();
+      };
+      document.getElementById('next100-btn').onclick = () => {
+        current = Math.min(words.length - 1, current + 100);
+        showQuestion();
+      };
+    }
+
+    document.getElementById('home-btn').onclick = () => location.reload();
+
+    // הפעל את דף הבית ברגע שהכל נטען
+    goHome();
+
+    // הפעל את מצב התצוגה שנבחר (אם קיים)
+    applyViewMode();
+
+    // עדכן גם אחרי כל טעינה מחדש
+    document.addEventListener('DOMContentLoaded', applyViewMode);
+  })
+  .catch(error => {
+    document.getElementById('main-content').textContent = 'שגיאה בטעינת החידון';
+    console.error('Error loading JSON:', error);
+  });
   </script>
 </body>
 </html>
