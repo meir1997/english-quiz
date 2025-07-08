@@ -219,6 +219,7 @@ fetch('words_quiz_he.json')
       document.getElementById('filter-unknown').onclick = () => showAllWords('unknown');
       document.getElementById('filter-not-seen').onclick = () => showAllWords('not-seen');
       document.getElementById('scroll-top-btn').onclick = () => window.scrollTo({top:0,behavior:'smooth'});
+      updateVersionIndicator();
     }
 
     function startQuiz() {
@@ -272,6 +273,7 @@ fetch('words_quiz_he.json')
       html += `<button id="back-btn">חזור</button>`;
       document.getElementById('main-content').innerHTML = html;
       document.getElementById('back-btn').onclick = goHome;
+      updateVersionIndicator();
     }
 
     function showQuestion() {
@@ -379,6 +381,7 @@ fetch('words_quiz_he.json')
         current = Math.min(words.length - 1, current + 100);
         showQuestion();
       };
+      updateVersionIndicator();
     }
 
     document.getElementById('home-btn').onclick = () => location.reload();
@@ -398,7 +401,7 @@ fetch('words_quiz_he.json')
 
     function updateVersionIndicator() {
       const mode = localStorage.getItem('viewMode') === 'mobile' ? 'טלפון' : 'מחשב';
-      document.getElementById('version-indicator').textContent = `גרסה 15 — תצוגת ${mode}`;
+      document.getElementById('version-indicator').textContent = `גרסה 16 — תצוגת ${mode}`;
     }
   })
   .catch(error => {
