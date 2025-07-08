@@ -24,7 +24,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 36px;
+      gap: 72px;
       width: 100%;
       margin: 0 auto 18px auto;
     }
@@ -72,10 +72,10 @@
     h1, h2 { font-size: calc(var(--main-font-size) * 1.5); }
     @media (max-width: 700px), (max-width: 600px) {
       .word-main {
-        margin-top: 30vh;
+        margin-top: 90vh;
       }
       .word-number {
-        font-size: 1em;
+        font-size: 2em;
       }
     }
   </style>
@@ -196,7 +196,7 @@ fetch('words_quiz_he.json')
         style.setProperty('--button-font-size', '1.5em');
         style.setProperty('--main-padding', '8px 0');
         style.setProperty('--option-width', '100%');
-        style.setProperty('--option-height', '80px');
+        style.setProperty('--option-height', '120px');
         style.setProperty('--option-margin', '18px auto');
         style.setProperty('--option-max-width', '98vw');
         style.setProperty('--main-max-width', '98vw');
@@ -425,7 +425,7 @@ fetch('words_quiz_he.json')
 
     function updateVersionIndicator() {
       const mode = localStorage.getItem('viewMode') === 'mobile' ? 'טלפון' : 'מחשב';
-      document.getElementById('version-indicator').textContent = `גרסה 27 — תצוגת ${mode}`;
+      document.getElementById('version-indicator').textContent = `גרסה 28 — תצוגת ${mode}`;
     }
   })
   .catch(error => {
