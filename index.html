@@ -176,7 +176,7 @@ fetch('words_quiz_he.json')
       document.body.classList.remove('mobile-view', 'desktop-view');
       if (mode === 'mobile') {
         style.setProperty('--main-font-size', '1.5em');
-        style.setProperty('--option-font-size', '2.2em');
+        style.setProperty('--option-font-size', '3.3em');
         style.setProperty('--button-font-size', '1.5em');
         style.setProperty('--main-padding', '8px 0');
         style.setProperty('--option-width', '100%');
@@ -409,7 +409,7 @@ fetch('words_quiz_he.json')
 
     function updateVersionIndicator() {
       const mode = localStorage.getItem('viewMode') === 'mobile' ? 'טלפון' : 'מחשב';
-      document.getElementById('version-indicator').textContent = `גרסה 24 — תצוגת ${mode}`;
+      document.getElementById('version-indicator').textContent = `גרסה 25 — תצוגת ${mode}`;
     }
   })
   .catch(error => {
