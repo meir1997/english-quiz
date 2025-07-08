@@ -28,12 +28,13 @@
       margin: 0 auto 18px auto;
     }
     .option {
-      width: var(--option-width);
-      min-width: 220px;
-      max-width: var(--option-max-width);
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
       height: var(--option-height);
-      margin: 0;
-      display: block;
+      margin: 0 0 18px 0;
       padding: var(--main-padding);
       font-size: var(--option-font-size);
       border-radius: 12px;
@@ -43,6 +44,7 @@
       text-align: center;
       line-height: normal;
       transition: box-shadow 0.2s;
+      box-sizing: border-box;
     }
     .option:hover {
       background: #e0f7fa;
@@ -313,8 +315,6 @@ fetch('words_quiz_he.json')
         const btn = document.createElement('button');
         btn.textContent = option;
         btn.className = 'option';
-        btn.style.width = '100%';
-        btn.style.maxWidth = getComputedStyle(document.documentElement).getPropertyValue('--option-max-width');
         btn.onclick = () => {
           if (option === w.correct) {
             document.getElementById('feedback').textContent = 'נכון!';
@@ -348,8 +348,6 @@ fetch('words_quiz_he.json')
       dontKnowBtn.textContent = 'לא יודע';
       dontKnowBtn.className = 'option';
       dontKnowBtn.style.backgroundColor = '#ffe0e0';
-      dontKnowBtn.style.width = '100%';
-      dontKnowBtn.style.maxWidth = getComputedStyle(document.documentElement).getPropertyValue('--option-max-width');
       dontKnowBtn.onclick = () => {
         let appearedWords3 = JSON.parse(localStorage.getItem('appearedWords') || '[]');
         if (!appearedWords3.includes(w.word)) {
@@ -404,7 +402,7 @@ fetch('words_quiz_he.json')
 
     function updateVersionIndicator() {
       const mode = localStorage.getItem('viewMode') === 'mobile' ? 'טלפון' : 'מחשב';
-      document.getElementById('version-indicator').textContent = `גרסה 17 — תצוגת ${mode}`;
+      document.getElementById('version-indicator').textContent = `גרסה 18 — תצוגת ${mode}`;
     }
   })
   .catch(error => {
