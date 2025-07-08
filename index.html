@@ -137,7 +137,7 @@ fetch('words_quiz_he.json')
           <button id="view-mobile" style="margin:0 8px;padding:8px 18px;font-size:1em;border-radius:8px;">תצוגת טלפון</button>
           <button id="view-desktop" style="margin:0 8px;padding:8px 18px;font-size:1em;border-radius:8px;">תצוגת מחשב</button>
         </div>
-        <div style="position:fixed;bottom:10px;left:10px;font-size:0.8em;color:#888;z-index:1000;">גרסה 15</div>
+        <div id="version-indicator" style="position:fixed;bottom:10px;left:10px;font-size:0.8em;color:#888;z-index:1000;"></div>
       `;
       document.getElementById('main-content').innerHTML = html;
       document.getElementById('start-quiz-btn').onclick = startQuiz;
@@ -154,11 +154,13 @@ fetch('words_quiz_he.json')
         localStorage.setItem('viewMode', 'mobile');
         applyViewMode();
         goHome();
+        updateVersionIndicator();
       };
       document.getElementById('view-desktop').onclick = () => {
         localStorage.setItem('viewMode', 'desktop');
         applyViewMode();
         goHome();
+        updateVersionIndicator();
       };
     }
 
@@ -386,9 +388,18 @@ fetch('words_quiz_he.json')
 
     // הפעל את מצב התצוגה שנבחר (אם קיים)
     applyViewMode();
+    updateVersionIndicator();
 
     // עדכן גם אחרי כל טעינה מחדש
-    document.addEventListener('DOMContentLoaded', applyViewMode);
+    document.addEventListener('DOMContentLoaded', () => {
+      applyViewMode();
+      updateVersionIndicator();
+    });
+
+    function updateVersionIndicator() {
+      const mode = localStorage.getItem('viewMode') === 'mobile' ? 'טלפון' : 'מחשב';
+      document.getElementById('version-indicator').textContent = `גרסה 15 — תצוגת ${mode}`;
+    }
   })
   .catch(error => {
     document.getElementById('main-content').textContent = 'שגיאה בטעינת החידון';
