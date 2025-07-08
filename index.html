@@ -134,8 +134,9 @@ fetch('words_quiz_he.json')
       words = quizWords.filter(w => !learnedWords.includes(w.word));
       // מיין לפי מספר המילה (בהנחה שהפורמט הוא "מספר. מילה")
       words.sort((a, b) => {
-        const numA = parseInt(a.word.split('.')[0], 10);
-        const numB = parseInt(b.word.split('.')[0], 10);
+        // חילוץ מספר המילה בצורה בטוחה
+        const numA = parseInt((a.word.match(/^\s*(\d+)/) || [0,0])[1], 10);
+        const numB = parseInt((b.word.match(/^\s*(\d+)/) || [0,0])[1], 10);
         return numA - numB;
       });
       score = parseInt(localStorage.getItem('vocabScore') || '0', 10);
@@ -155,8 +156,9 @@ fetch('words_quiz_he.json')
       // הצג לפי סדר מספרי בלבד
       words = [...unknown];
       words.sort((a, b) => {
-        const numA = parseInt(a.word.split('.')[0], 10);
-        const numB = parseInt(b.word.split('.')[0], 10);
+        // חילוץ מספר המילה בצורה בטוחה
+        const numA = parseInt((a.word.match(/^\s*(\d+)/) || [0,0])[1], 10);
+        const numB = parseInt((b.word.match(/^\s*(\d+)/) || [0,0])[1], 10);
         return numA - numB;
       });
       score = parseInt(localStorage.getItem('vocabScore') || '0', 10);
