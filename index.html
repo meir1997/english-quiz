@@ -172,15 +172,15 @@ fetch('words_quiz_he.json')
       const style = document.documentElement.style;
       document.body.classList.remove('mobile-view', 'desktop-view');
       if (mode === 'mobile') {
-        style.setProperty('--main-font-size', '1em');
-        style.setProperty('--option-font-size', '1em');
-        style.setProperty('--button-font-size', '1em');
+        style.setProperty('--main-font-size', '1.5em');
+        style.setProperty('--option-font-size', '1.5em');
+        style.setProperty('--button-font-size', '1.5em');
         style.setProperty('--main-padding', '8px 0');
         style.setProperty('--option-width', '100%');
         style.setProperty('--option-height', '80px');
         style.setProperty('--option-margin', '18px auto');
         style.setProperty('--option-max-width', '96vw');
-        style.setProperty('--main-max-width', '100vw');
+        style.setProperty('--main-max-width', '500px');
         document.body.classList.add('mobile-view');
       } else {
         style.setProperty('--main-font-size', '1em');
@@ -405,7 +405,7 @@ fetch('words_quiz_he.json')
 
     function updateVersionIndicator() {
       const mode = localStorage.getItem('viewMode') === 'mobile' ? 'טלפון' : 'מחשב';
-      document.getElementById('version-indicator').textContent = `גרסה 20 — תצוגת ${mode}`;
+      document.getElementById('version-indicator').textContent = `גרסה 21 — תצוגת ${mode}`;
     }
   })
   .catch(error => {
