@@ -54,7 +54,7 @@
       background: #e0f7fa;
       box-shadow: 0 2px 8px #0001;
     }
-    .word-number { display: block; font-size: 0.5em; color: #888; margin-bottom: 0.2em; }
+    .word-number { display: block; font-size: 1.5em; color: #888; margin-bottom: 0.2em; }
     .word-main {
       display: block;
       font-size: var(--option-font-size);
@@ -75,7 +75,7 @@
         margin-top: 90vh;
       }
       .word-number {
-        font-size: 2em;
+        font-size: 2.5em;
       }
     }
   </style>
@@ -424,7 +424,7 @@ fetch('words_quiz_he.json')
 
     function updateVersionIndicator() {
       const mode = localStorage.getItem('viewMode') === 'mobile' ? 'טלפון' : 'מחשב';
-      document.getElementById('version-indicator').textContent = `גרסה 28 — תצוגת ${mode}`;
+      document.getElementById('version-indicator').textContent = `גרסה 29 — תצוגת ${mode}`;
     }
   })
   .catch(error => {
