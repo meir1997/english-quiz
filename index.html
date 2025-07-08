@@ -46,6 +46,9 @@
       line-height: normal;
       transition: box-shadow 0.2s;
       box-sizing: border-box;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .option:hover {
       background: #e0f7fa;
@@ -173,7 +176,7 @@ fetch('words_quiz_he.json')
       document.body.classList.remove('mobile-view', 'desktop-view');
       if (mode === 'mobile') {
         style.setProperty('--main-font-size', '1.5em');
-        style.setProperty('--option-font-size', '1.5em');
+        style.setProperty('--option-font-size', '2.2em');
         style.setProperty('--button-font-size', '1.5em');
         style.setProperty('--main-padding', '8px 0');
         style.setProperty('--option-width', '100%');
@@ -406,7 +409,7 @@ fetch('words_quiz_he.json')
 
     function updateVersionIndicator() {
       const mode = localStorage.getItem('viewMode') === 'mobile' ? 'טלפון' : 'מחשב';
-      document.getElementById('version-indicator').textContent = `גרסה 23 — תצוגת ${mode}`;
+      document.getElementById('version-indicator').textContent = `גרסה 24 — תצוגת ${mode}`;
     }
   })
   .catch(error => {
