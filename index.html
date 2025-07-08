@@ -301,6 +301,7 @@ fetch('words_quiz_he.json')
           <button id="next-btn" class="arrow-btn">➡️</button>
           <button id="next100-btn" class="arrow-btn">100 ➡️</button>
         </div>
+        <div id="version-indicator" style="position:fixed;bottom:10px;left:10px;font-size:0.8em;color:#888;z-index:1000;"></div>
       `;
       document.getElementById('main-content').innerHTML = html;
       const optionsDiv = document.getElementById('options');
@@ -313,6 +314,7 @@ fetch('words_quiz_he.json')
         btn.textContent = option;
         btn.className = 'option';
         btn.style.width = '100%';
+        btn.style.maxWidth = getComputedStyle(document.documentElement).getPropertyValue('--option-max-width');
         btn.onclick = () => {
           if (option === w.correct) {
             document.getElementById('feedback').textContent = 'נכון!';
@@ -347,6 +349,7 @@ fetch('words_quiz_he.json')
       dontKnowBtn.className = 'option';
       dontKnowBtn.style.backgroundColor = '#ffe0e0';
       dontKnowBtn.style.width = '100%';
+      dontKnowBtn.style.maxWidth = getComputedStyle(document.documentElement).getPropertyValue('--option-max-width');
       dontKnowBtn.onclick = () => {
         let appearedWords3 = JSON.parse(localStorage.getItem('appearedWords') || '[]');
         if (!appearedWords3.includes(w.word)) {
@@ -401,7 +404,7 @@ fetch('words_quiz_he.json')
 
     function updateVersionIndicator() {
       const mode = localStorage.getItem('viewMode') === 'mobile' ? 'טלפון' : 'מחשב';
-      document.getElementById('version-indicator').textContent = `גרסה 16 — תצוגת ${mode}`;
+      document.getElementById('version-indicator').textContent = `גרסה 17 — תצוגת ${mode}`;
     }
   })
   .catch(error => {
