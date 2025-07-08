@@ -129,7 +129,7 @@ fetch('words_quiz_he.json')
           <button id="view-mobile" style="margin:0 8px;padding:8px 18px;font-size:1em;border-radius:8px;">תצוגת טלפון</button>
           <button id="view-desktop" style="margin:0 8px;padding:8px 18px;font-size:1em;border-radius:8px;">תצוגת מחשב</button>
         </div>
-        <div style="position:fixed;bottom:10px;left:10px;font-size:0.8em;color:#888;z-index:1000;">גרסה 11</div>
+        <div style="position:fixed;bottom:10px;left:10px;font-size:0.8em;color:#888;z-index:1000;">גרסה 12</div>
       `;
       document.getElementById('main-content').innerHTML = html;
       document.getElementById('start-quiz-btn').onclick = startQuiz;
@@ -145,16 +145,19 @@ fetch('words_quiz_he.json')
       document.getElementById('view-mobile').onclick = () => {
         localStorage.setItem('viewMode', 'mobile');
         applyViewMode();
+        goHome();
       };
       document.getElementById('view-desktop').onclick = () => {
         localStorage.setItem('viewMode', 'desktop');
         applyViewMode();
+        goHome();
       };
     }
 
     function applyViewMode() {
       const mode = localStorage.getItem('viewMode');
       const style = document.documentElement.style;
+      document.body.classList.remove('mobile-view', 'desktop-view');
       if (mode === 'mobile') {
         style.setProperty('--main-font-size', '1em');
         style.setProperty('--option-font-size', '1em');
@@ -163,6 +166,7 @@ fetch('words_quiz_he.json')
         style.setProperty('--option-width', '96vw');
         style.setProperty('--option-height', '80px');
         style.setProperty('--option-margin', '18px auto');
+        document.body.classList.add('mobile-view');
       } else {
         style.setProperty('--main-font-size', '1em');
         style.setProperty('--option-font-size', '1em');
@@ -171,6 +175,7 @@ fetch('words_quiz_he.json')
         style.setProperty('--option-width', '420px');
         style.setProperty('--option-height', '60px');
         style.setProperty('--option-margin', '18px auto');
+        document.body.classList.add('desktop-view');
       }
     }
 
@@ -362,6 +367,9 @@ fetch('words_quiz_he.json')
 
     // הפעל את דף הבית ברגע שהכל נטען
     goHome();
+
+    // הפעל את מצב התצוגה שנבחר (אם קיים)
+    applyViewMode();
 
     // עדכן גם אחרי כל טעינה מחדש
     document.addEventListener('DOMContentLoaded', applyViewMode);
