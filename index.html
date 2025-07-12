@@ -89,7 +89,7 @@
     import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
     import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 
-    const APP_VERSION = 30;
+    const APP_VERSION = 31;
 
     const firebaseConfig = {
       apiKey: "AIzaSyDVRxq8xDuZbF7Jxyz74qMQzGj09zIjhhU",
@@ -540,11 +540,19 @@
         alert(`חיבור ל-Firebase נכשל: ${error.message}\nנסה לבדוק את חיבור האינטרנט או לפתוח את האפליקציה בשרת מקומי.`);
       }
     }
-  })
-  .catch(error => {
-    document.getElementById('main-content').textContent = 'שגיאה בטעינת החידון';
-    console.error('Error loading JSON:', error);
-  });
+
+  fetch('words.json')
+    .then(response => response.json())
+    .then(data => {
+      words = data;
+      showQuestion();
+    })
+    .catch(error => {
+      document.getElementById('main-content').textContent = 'שגיאה בטעינת החידון';
+      console.error('Error loading JSON:', error);
+    });
+      words = data;
+      showQuestion();
   </script>
 </body>
 </html>
