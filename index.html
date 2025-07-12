@@ -89,7 +89,7 @@
     import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
     import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 
-    const APP_VERSION = "31.5";
+    const APP_VERSION = "31.6";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDVRxq8xDuZbF7Jxyz74qMQzGj09zIjhhU",
@@ -347,13 +347,17 @@
       }
     }
 
-    function showAllWords(filter = 'all') {
+    function showAllWords(filter = 'all', searchTerm = '') {
       learnedWords = JSON.parse(localStorage.getItem('learnedWords') || '[]');
       appearedWords = JSON.parse(localStorage.getItem('appearedWords') || '[]');
       let filtered = quizWords;
       if (filter === 'known') filtered = quizWords.filter(w => learnedWords.includes(w.word));
       if (filter === 'unknown') filtered = quizWords.filter(w => appearedWords.includes(w.word) && !learnedWords.includes(w.word));
       if (filter === 'not-seen') filtered = quizWords.filter(w => !appearedWords.includes(w.word));
+      if (searchTerm) {
+        const term = searchTerm.trim().toLowerCase();
+        filtered = filtered.filter(w => w.word.toLowerCase().includes(term));
+      }
       let html = `<h2>רשימת כל המילים</h2>
         <div>
           <button id="filter-all">הכל</button>
@@ -361,20 +365,22 @@
           <button id="filter-unknown">שלא ידעתי</button>
           <button id="filter-not-seen">שטרם הופיעו</button>
         </div>
-        <ul style="list-style:none;padding:0;">
+        <input id="search-word-list" type="text" placeholder="חפש מילה..." style="margin:14px 0 10px 0;padding:8px;width:70%;font-size:1em;direction:rtl;text-align:right;border-radius:8px;border:1px solid #ccc;" />
+        <ul id="words-list-ul" style="list-style:none;padding:0;text-align:right;direction:rtl;">
       `;
       html += filtered.map(w => {
         let status = learnedWords.includes(w.word) ? '✔️' : (appearedWords.includes(w.word) ? '❌' : '⏳');
-        return `<li>${w.word} ${status}</li>`;
+        return `<li style="margin-bottom:6px;">${w.word} ${status}</li>`;
       }).join('') + '</ul>';
       html += `<button id="back-btn">חזור</button> <button id="scroll-top-btn">חזור למעלה</button>`;
       document.getElementById('main-content').innerHTML = html;
       document.getElementById('back-btn').onclick = goHome;
-      document.getElementById('filter-all').onclick = () => showAllWords('all');
-      document.getElementById('filter-known').onclick = () => showAllWords('known');
-      document.getElementById('filter-unknown').onclick = () => showAllWords('unknown');
-      document.getElementById('filter-not-seen').onclick = () => showAllWords('not-seen');
+      document.getElementById('filter-all').onclick = () => showAllWords('all', document.getElementById('search-word-list').value);
+      document.getElementById('filter-known').onclick = () => showAllWords('known', document.getElementById('search-word-list').value);
+      document.getElementById('filter-unknown').onclick = () => showAllWords('unknown', document.getElementById('search-word-list').value);
+      document.getElementById('filter-not-seen').onclick = () => showAllWords('not-seen', document.getElementById('search-word-list').value);
       document.getElementById('scroll-top-btn').onclick = () => window.scrollTo({top:0,behavior:'smooth'});
+      document.getElementById('search-word-list').oninput = (e) => showAllWords(filter, e.target.value);
       updateVersionIndicator();
     }
 
@@ -508,11 +514,11 @@
           appearedWords3.push(w.word);
           localStorage.setItem('appearedWords', JSON.stringify(appearedWords3));
         }
-        document.getElementById('feedback').textContent = "הוספת ל'לא ידעתי'";
+        document.getElementById('feedback').textContent = 'התשובה הנכונה: ' + w.correct;
         setTimeout(() => {
           current++;
           showQuestion();
-        }, 700);
+        }, 1200);
       };
       optionsDiv.appendChild(dontKnowBtn);
       // חיצים לניווט
