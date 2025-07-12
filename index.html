@@ -89,7 +89,7 @@
     import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
     import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 
-    const APP_VERSION = "31.4";
+    const APP_VERSION = "31.5";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDVRxq8xDuZbF7Jxyz74qMQzGj09zIjhhU",
@@ -298,12 +298,7 @@
     // מעקב אחרי התחברות/התנתקות
     onAuthStateChanged(auth, (user) => {
       currentUser = user;
-      if (currentUser && !hasLoadedCloudProgress) {
-        hasLoadedCloudProgress = true;
-        loadProgressFromCloud();
-      } else {
-        goHome();
-      }
+      goHome();
     });
 
     // שאר הקוד (פונקציות quiz וכו') נשארות כמו שהן, רק ודא שקריאות לגיבוי/שחזור עוברות דרך goHome
