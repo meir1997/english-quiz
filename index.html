@@ -89,7 +89,7 @@
     import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
     import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 
-    const APP_VERSION = "31.6";
+    const APP_VERSION = "31.7";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDVRxq8xDuZbF7Jxyz74qMQzGj09zIjhhU",
@@ -353,7 +353,7 @@
       let filtered = quizWords;
       if (filter === 'known') filtered = quizWords.filter(w => learnedWords.includes(w.word));
       if (filter === 'unknown') filtered = quizWords.filter(w => appearedWords.includes(w.word) && !learnedWords.includes(w.word));
-      if (filter === 'not-seen') filtered = quizWords.filter(w => !appearedWords.includes(w.word));
+      if (filter === 'not-seen') filtered = quizWords.filter(w => !appearedWords.includes(w.word) && !learnedWords.includes(w.word));
       if (searchTerm) {
         const term = searchTerm.trim().toLowerCase();
         filtered = filtered.filter(w => w.word.toLowerCase().includes(term));
