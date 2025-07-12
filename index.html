@@ -89,7 +89,7 @@
     import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
     import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 
-    const APP_VERSION = "31.7";
+    const APP_VERSION = "31.8";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDVRxq8xDuZbF7Jxyz74qMQzGj09zIjhhU",
@@ -374,13 +374,17 @@
       }).join('') + '</ul>';
       html += `<button id="back-btn">חזור</button> <button id="scroll-top-btn">חזור למעלה</button>`;
       document.getElementById('main-content').innerHTML = html;
+      // שמור ערך חיפוש קיים
+      const searchInput = document.getElementById('search-word-list');
+      searchInput.value = searchTerm;
+      // searchInput.focus(); // הסר פוקוס אוטומטי כדי לאפשר הקלדה תקינה
       document.getElementById('back-btn').onclick = goHome;
-      document.getElementById('filter-all').onclick = () => showAllWords('all', document.getElementById('search-word-list').value);
-      document.getElementById('filter-known').onclick = () => showAllWords('known', document.getElementById('search-word-list').value);
-      document.getElementById('filter-unknown').onclick = () => showAllWords('unknown', document.getElementById('search-word-list').value);
-      document.getElementById('filter-not-seen').onclick = () => showAllWords('not-seen', document.getElementById('search-word-list').value);
+      document.getElementById('filter-all').onclick = () => showAllWords('all', searchInput.value);
+      document.getElementById('filter-known').onclick = () => showAllWords('known', searchInput.value);
+      document.getElementById('filter-unknown').onclick = () => showAllWords('unknown', searchInput.value);
+      document.getElementById('filter-not-seen').onclick = () => showAllWords('not-seen', searchInput.value);
       document.getElementById('scroll-top-btn').onclick = () => window.scrollTo({top:0,behavior:'smooth'});
-      document.getElementById('search-word-list').oninput = (e) => showAllWords(filter, e.target.value);
+      searchInput.oninput = (e) => showAllWords(filter, e.target.value);
       updateVersionIndicator();
     }
 
